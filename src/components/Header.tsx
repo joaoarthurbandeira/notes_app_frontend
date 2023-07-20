@@ -1,11 +1,26 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 const Header = () => {
   let { user, logoutUser } = useContext(AuthContext);
+  const location = useLocation();
+  const highlightLogin =
+    location.pathname === "/login"
+      ? "border-b border-b-[9px]   border-emerald-500 "
+      : "";
+  const highlightRegiser =
+    location.pathname === "/register"
+      ? "border-b border-b-[9px]   border-emerald-500"
+      : "";
+
+  // useEffect(() => {
+  //   console.log(location);
+  // });
+
   return (
-    <div className="w-full  text-4xl text-white bg-slate-700 flex  justify-center fixed gap-1">
+    <div
+      className={`app-header w-full  text-4xl text-white bg-slate-700 flex  justify-center  container mx-auto gap-2    `}>
       <Link to="/">Home</Link>
       <span> | </span>
       {user ? (
@@ -13,12 +28,20 @@ const Header = () => {
           Logout
         </p>
       ) : (
-        <Link to="/login">Login</Link>
+        <>
+          <Link to="/login" className={`${highlightLogin}`}>
+            Login
+          </Link>
+          <span> | </span>
+          <Link to="/register" className={`${highlightRegiser}`}>
+            Register
+          </Link>
+        </>
       )}
 
       {user && (
         <>
-          <span> | </span> <p>Hello, {user.username}.</p>
+          <span> | </span> <p>{user.username}</p>
         </>
       )}
     </div>
